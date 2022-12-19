@@ -16,14 +16,10 @@
                 <span class="white--text">Columna</span>
               </v-btn>
               <v-btn width="50%" active-class="primary" class="font-weight-bold" value="Building">
-                <img src="/icons/home-pin.png" width="30">
+                <img src="/icons/building-pin.png" width="30">
                 <span class="white--text">Edificio</span>
               </v-btn>
             </v-btn-toggle>
-          </v-col>
-          <v-col class="col-12">
-            <formsFieldsTextComponent label-color="white--text" background-color="white" class="black--text"
-              v-model="marker.apple" label="Manzana"></formsFieldsTextComponent>
           </v-col>
           <v-col class="col-12">
             <formsFieldsTextComponent label-color="white--text" background-color="white" class="black--text"

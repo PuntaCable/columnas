@@ -16,7 +16,7 @@
                   <span class="white--text">Columna</span>
                 </v-btn>
                 <v-btn width="100%" active-class="primary" v-else class="font-weight-bold" value="Building">
-                  <img src="/icons/home-pin.png" width="30">
+                  <img src="/icons/building-pin.png" width="30">
                   <span class="white--text">Edificio</span>
                 </v-btn>
               </v-btn-toggle>
