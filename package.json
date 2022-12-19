@@ -1,0 +1,30 @@
+{
+  "name": "columnas",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "nuxt",
+    "build": "nuxt build",
+    "start": "nuxt start",
+    "generate": "nuxt generate"
+  },
+  "dependencies": {
+    "@nuxtjs/axios": "^5.13.6",
+    "@nuxtjs/pwa": "^3.3.5",
+    "core-js": "^3.25.3",
+    "leaflet": "^1.9.3",
+    "leaflet-geosearch": "^3.7.0",
+    "leaflet-routing-machine": "^3.2.12",
+    "lrm-graphhopper": "^1.2.0",
+    "nuxt": "^2.15.8",
+    "vue": "^2.7.10",
+    "vue-server-renderer": "^2.7.10",
+    "vue-template-compiler": "^2.7.10",
+    "vue2-leaflet": "^2.7.1",
+    "vue2-leaflet-movingmarker": "^1.1.0",
+    "vuetify": "^2.6.10"
+  },
+  "devDependencies": {
+    "@nuxtjs/vuetify": "^1.12.3"
+  }
+}

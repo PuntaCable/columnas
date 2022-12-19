@@ -1,0 +1,162 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700&display=swap');
+@import '~vuetify/src/styles/styles.sass';
+$main-font: 'Montserrat';
+
+
+@keyframes jump {
+  0%   {transform: translate3d(0,0,0) scale3d(1,1,1);}
+  40%  {transform: translate3d(0,30%,0) scale3d(.7,1.5,1);}
+  100% {transform: translate3d(0,100%,0) scale3d(1.5,.7,1);}
+}
+
+body {
+
+  .v-application {
+
+    .background-gradient{
+        background: #202020 !important
+    }
+    input{
+      font-family: $main-font!important;
+      color:black!important
+    } 
+    .secondary{
+      background:linear-gradient(245deg, #311b92, #673ab7)!important;
+    }
+    .p-relative {
+      position: relative;
+    }
+    .p-absolute{
+      position: absolute;
+    }
+    .fill-width {
+      width: 100% !important;
+    }
+    .loading {
+      transform-origin: 50% 50%;
+      animation: jump .5s linear alternate infinite;
+    }
+    .p-relative{
+      position:relative;
+    }
+    //@grid
+    .align-stretch {
+      align-items: stretch;
+    }
+
+    //Graphs
+    .v-progress-circular__overlay {
+      stroke-linecap: round;
+    }
+
+    //Buttons
+    .v-btn {
+      font-family: $main-font !important;
+    }
+    .divider{
+      background: #f8f9fc29!important;
+    }
+    //colors 
+    .primary-gradient {
+      background: linear-gradient(180deg, map-get($blue, darken-1), map-get($blue, darken-4));
+    }
+    //elevations
+
+    .elevation-12 {
+      box-shadow: 20px 19px 8px -4px #c9c9c933, 0px 12px 17px 2px #c9c9c933, 0px 5px 22px 4px #c9c9c933 !important;
+    }
+    //programs
+
+    .top-program::after {
+      background: linear-gradient(to bottom, #302b6326, #151133) !important;
+      content: "";
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      z-index: 1;
+    }
+  
+  
+    //borders
+
+
+    .border-color-top{
+      border-top:4px solid #ff8212
+    }
+    .border-color-bottom{
+      border-bottom:4px solid #ff8212
+    }
+
+    //Text
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    label,
+    span,
+    p,
+    h6 .text-h1,
+    .body-2,
+    .text-h2,
+    .text-h3,
+    .text-h4,
+    .text-h5,
+    .text-h6,
+    .v-toolbar__content,
+    .v-stepper__label,
+    .v-card__text,
+    .text-subtitle-1,
+    .text-subtitle-2,
+    .v-card__subtitle,
+    .v-list-item__title,
+    .v-list-item__subtitle,
+    .v-card__title {
+      font-family: $main-font !important;
+    }
+
+    .font-weight-bold {
+      font-weight: 700 !important;
+    }
+
+    .font-weight-regular {
+      font-weight: 600 !important;
+    }
+
+    .font-weight-semi-regular {
+      font-weight: 500 !important;
+    }
+    
+    //inputs
+    .v-input--selection-controls{
+      margin-top: 0;
+      padding-top: 0;
+    }
+    //icons 
+    .icon-shadow{
+      text-shadow: 1px 1px 2px black;
+    }
+    //table
+    .v-data-table-header{
+      th {
+        font-size:15px!important;
+        font-family: $main-font;
+        color: black!important;
+      }
+    }
+    .active-tab {
+      background: #03a9f4 !important;
+      border-radius: 10px;  
+      color:black!important;
+        
+    }
+    @media  (min-width: 720px) {
+      .v-tab{
+        width:25%!important;
+      }
+    }
+  }
+}
