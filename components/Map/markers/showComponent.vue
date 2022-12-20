@@ -23,10 +23,15 @@
                   <img src="/icons/column-pin.png" width="30">
                   <span class="white--text">Columna</span>
                 </v-btn>
-                <v-btn width="100%" active-class="primary" v-else class="font-weight-bold" value="Building">
+                <v-btn width="100%" active-class="primary" v-else-if="marker.type=='Building'" class="font-weight-bold" value="Building">
                   <img src="/icons/building-pin.png" width="30">
                   <span class="white--text">Edificio</span>
                 </v-btn>
+                <v-btn width="100%" active-class="primary" v-else class="font-weight-bold" value="Home">
+                  <img src="/icons/home-pin.png" width="30">
+                  <span class="white--text">Casa</span>
+                </v-btn>
+
               </v-btn-toggle>
             </v-col>
             <v-col class="col-12">

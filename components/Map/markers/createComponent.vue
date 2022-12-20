@@ -11,14 +11,19 @@
           <v-col class="col-12">
             <v-btn-toggle class="elevation-3 rounded-lg" color="primary white--text" v-model="marker.type"
               style="width:100%">
-              <v-btn width="50%" active-class="primary" class="font-weight-bold" value="Column">
+              <v-btn width="33%" active-class="primary" class="font-weight-bold" value="Column">
                 <img src="/icons/column-pin.png" width="30">
                 <span class="white--text">Columna</span>
               </v-btn>
-              <v-btn width="50%" active-class="primary" class="font-weight-bold" value="Building">
+              <v-btn width="33%" active-class="primary" class="font-weight-bold" value="Building">
                 <img src="/icons/building-pin.png" width="30">
                 <span class="white--text">Edificio</span>
               </v-btn>
+              <v-btn width="33%" active-class="primary" class="font-weight-bold" value="Home">
+                  <img src="/icons/home-pin.png" width="30">
+                  <span class="white--text">Casa</span>
+                </v-btn>
+
             </v-btn-toggle>
           </v-col>
           <v-col class="col-12">
