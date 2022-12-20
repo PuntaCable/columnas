@@ -11,9 +11,11 @@
               <span class="font-weight-regular black--text">{{ pos.id }}</span>
             </l-icon>
           </l-marker>
-          <l-marker draggable z-index="100" @dragend="setPos" :lat-lng="latLng(myPosition.lat, myPosition.lng)"
+
+          <l-marker  :zIndexOffset="10000" draggable @dragend="setPos" :lat-lng="latLng(myPosition.lat, myPosition.lng)"
             :duration="1200">
-            <l-icon :icon-size="[70, 70]" icon-url="/icons/pin.png"></l-icon>
+            <l-icon  :icon-size="[70, 70]" icon-url="/icons/pin.png">
+            </l-icon>
           </l-marker>
 
           <div class="slidePet d-flex align-center flex-column z-index">

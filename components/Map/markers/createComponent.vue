@@ -63,7 +63,11 @@
           }
         }).
         then(()=>{
+          this.marker = {
+            type: 'Column'
+          }
           this.$emit('pincreated')
+          this.$emit('input', false)
         })
       }
     }

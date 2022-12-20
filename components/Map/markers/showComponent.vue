@@ -4,6 +4,12 @@
         <v-card-title class="white--text">
           <v-icon class="mr-2">mdi-map-marker</v-icon>
           <span class="font-weight-bold">Ver marcador</span>
+
+          <v-spacer></v-spacer>
+        <v-btn icon @click="$emit('input', false)">
+            <v-icon>mdi-close</v-icon>
+        </v-btn>
+
         </v-card-title>
         <v-divider></v-divider>
         <v-card-text>
@@ -22,7 +28,7 @@
               </v-btn-toggle>
             </v-col>
             <v-col class="col-12">
-              <formsFieldsTextComponent label-color="white--text" background-color="white" class="black--text"
+              <formsFieldsTextComponent readonly label-color="white--text" background-color="white" class="black--text"
                 v-model="marker.reference" label="Referencia"></formsFieldsTextComponent>
             </v-col>
           </v-row>

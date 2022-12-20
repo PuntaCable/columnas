@@ -3,7 +3,7 @@
     <v-card elevation="24" width="90%" class="mx-auto rounded-xl" v-if="value">
       <v-card-title class="white--text">
         <v-icon class="mr-2">mdi-map-marker</v-icon>
-        <span class="font-weight-bold">Crear conexion</span>
+        <span class="font-weight-bold">Distancia entre Col.</span>
         <v-spacer></v-spacer>
         <v-btn icon @click="closeDialog()">
             <v-icon>mdi-close</v-icon>
