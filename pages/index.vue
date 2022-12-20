@@ -1,10 +1,14 @@
 <template>
   <v-container fluid class="pa-0">
+
     <v-card class="fill-height p-relative">
+      <v-card-title>
+        <mapExportComponent :points="geoMultiple"></mapExportComponent>
+      </v-card-title>
       <l-map ref="map" :center="latLng(mapCenter.lat, mapCenter.lng)" :zoom="mapZoom">
         <div class="p-relative">
           <l-tile-layer :url="url" />
-          <l-marker z-index="1000" v-for="(pos,index) in geoMultiple" :key="index" @click="setMarker(pos)"
+          <l-marker z-index="1000" v-for="(pos,index) in geoMultiple" :draggable="pos.draggable" @dragend="setMarkerPos" :key="index" @click="setMarker(pos)"
             :lat-lng="latLng(pos.lat, pos.lng)">
             <l-icon :icon-size="[40, 40]" class="d-flex align-center">
               <img style="width:40px!important" :src="`/icons/${pos.type.toLowerCase()}-pin.png`">
@@ -21,7 +25,9 @@
           <div class="slidePet d-flex align-center flex-column z-index">
             <mapMarkersCreateConnectionComponent :marker="marker" :points="points" v-model="infoConnectMarker">
             </mapMarkersCreateConnectionComponent>
-            <mapMarkersShowComponent :marker="marker" @connectmarker="connectMarker" v-model="showMarker">
+            <mapMarkersShowComponent :marker="marker" 
+            @connectmarker="connectMarker" @updateModifiedMarker="updateModifiedMarker" 
+            @updatemarker="setMarkerDragable" v-model="showMarker">
             </mapMarkersShowComponent>
             <mapMarkersCreateComponent :latLng="myPosition" @pincreated="getMarkers()" :value="modal">
             </mapMarkersCreateComponent>
@@ -109,6 +115,21 @@
           .catch((error) => {
             console.log(error)
           })
+      },
+      setMarkerDragable(){
+        let indexMarker = this.geoMultiple.findIndex(marker => marker.id === this.marker.id)
+        const marker = this.geoMultiple[indexMarker]
+        let draggable = (marker.draggable) ? false : true
+        this.$set(this.geoMultiple,indexMarker,{...this.marker,draggable:draggable})
+      },
+      setMarkerPos(e){
+        console.log(e.target)
+        this.marker.lat = e.target._latlng.lat
+        this.marker.lng = e.target._latlng.lng
+      },
+      updateModifiedMarker(){
+        let indexMarker = this.geoMultiple.findIndex(marker => marker.id === this.marker.id)
+        this.$set(this.geoMultiple,indexMarker,this.marker)
       },
       setMarker(e) {
         if (this.infoConnectMarker) {
@@ -223,7 +244,7 @@
   }
 
   .fill-height {
-    height: calc(100vh - 48px) !important;
+    height: calc(100vh - 100px) !important;
   }
 
   .slidePet {
