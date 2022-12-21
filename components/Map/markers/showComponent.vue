@@ -38,6 +38,18 @@
               <formsFieldsTextComponent readonly label-color="white--text" background-color="white" class="black--text"
                 v-model="marker.reference" label="Referencia"></formsFieldsTextComponent>
             </v-col>
+            <template v-if="marker.type == 'Building'">
+            <v-col class="col-12">
+              <formsFieldsTextComponent readonly label-color="white--text" background-color="white" class="black--text"
+                v-model="marker.floor" type="number" label="Piso"></formsFieldsTextComponent>
+            </v-col>
+            <v-col class="col-12">
+              <formsFieldsTextComponent readonly label-color="white--text" background-color="white" class="black--text"
+                v-model="marker.apto" type="number" label="Apto"></formsFieldsTextComponent>
+            </v-col>
+            </template>
+
+
           </v-row>
         </v-card-text>
         <v-card-actions>

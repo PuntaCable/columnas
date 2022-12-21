@@ -5,7 +5,8 @@
 
       </v-col>
       <v-col class="col-12">
-        <l-map ref="map" @dragend="checkPos" style="height:400px;z-index: 1;" :center="latLng(value.lat, value.lng)" :zoom="zoom">
+        <l-map ref="map" @dragend="checkPos" style="height:400px;z-index: 1;" :center="latLng(value.lat, value.lng)"
+          :zoom="zoom">
           <l-tile-layer :url="url" />
           <l-marker :draggable="draggable" @dragend="updatePos" :lat-lng="latLng(value.lat, value.lng)">
             <l-icon :icon-size="[50, 50]" icon-url="/marker.png" />
@@ -27,6 +28,7 @@
     LIcon
   } from 'vue2-leaflet';
   import 'leaflet/dist/leaflet.css';
+  const esri = require('esri-leaflet');
 
   export default {
     components: {
@@ -51,7 +53,7 @@
         latLng: latLng,
         mapZoom: 18,
         searchItems: '',
-        value:{
+        value: {
           lat: -34.9057331,
           lng: -54.9513517
         }
@@ -61,7 +63,7 @@
       updatePos(e) {
         this.$emit('input', e.target['_latlng'])
       },
-      checkPos(e){
+      checkPos(e) {
         console.log(e)
         //console.log(this.$refs.map.getCenter())
       }

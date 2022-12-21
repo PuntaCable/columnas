@@ -30,6 +30,16 @@
             <formsFieldsTextComponent label-color="white--text" background-color="white" class="black--text"
               v-model="marker.reference" label="Referencia"></formsFieldsTextComponent>
           </v-col>
+          <template v-if="marker.type == 'Building'">
+            <v-col class="col-12">
+              <formsFieldsTextComponent type="number" label-color="white--text" background-color="white" class="black--text"
+                v-model="marker.floor" label="Piso"></formsFieldsTextComponent>
+            </v-col>
+            <v-col class="col-12">
+              <formsFieldsTextComponent type="number" label-color="white--text" background-color="white" class="black--text"
+                v-model="marker.apto" label="Apto"></formsFieldsTextComponent>
+            </v-col>
+            </template>
         </v-row>
       </v-card-text>
       <v-card-actions>

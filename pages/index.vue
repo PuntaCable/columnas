@@ -5,29 +5,37 @@
       <v-card-title>
         <mapExportComponent :points="geoMultiple"></mapExportComponent>
       </v-card-title>
-      <l-map ref="map" :center="latLng(mapCenter.lat, mapCenter.lng)" :zoom="mapZoom">
+      <l-map ref="map" @update:zoom="checkZoom" :center="latLng(mapCenter.lat, mapCenter.lng)" :zoom="mapZoom">
         <div class="p-relative">
           <l-tile-layer :url="url" />
-          <l-marker z-index="1000" v-for="(pos,index) in geoMultiple" :draggable="pos.draggable" @dragend="setMarkerPos" :key="index" @click="setMarker(pos)"
-            :lat-lng="latLng(pos.lat, pos.lng)">
+          <l-marker z-index="1000" v-for="(pos,index) in geoMultiple" :draggable="pos.draggable" @dragend="setMarkerPos"
+            :key="index" @click="setMarker(pos)" :lat-lng="latLng(pos.lat, pos.lng)">
             <l-icon :icon-size="[40, 40]" class="d-flex align-center">
               <img style="width:40px!important" :src="`/icons/${pos.type.toLowerCase()}-pin.png`">
               <span class="font-weight-regular black--text">{{ pos.id }}</span>
             </l-icon>
           </l-marker>
+          <template v-if="showPadrones">
+            <l-marker z-index="1000" v-for="(m,index) in markers" :key="'P'+index" :lat-lng="latLng(m.lat, m.lng)">
+              <l-icon :icon-size="[70, 70]" class="pt-4">
+                <div class="pt-6 pl-3">
+                  <span class="black--text">{{ m.padron }}</span>
+                </div>
+              </l-icon>
+            </l-marker>
+          </template>
 
-          <l-marker  :zIndexOffset="10000" draggable @dragend="setPos" :lat-lng="latLng(myPosition.lat, myPosition.lng)"
+          <l-marker :zIndexOffset="10000" draggable @dragend="setPos" :lat-lng="latLng(myPosition.lat, myPosition.lng)"
             :duration="1200">
-            <l-icon  :icon-size="[70, 70]" icon-url="/icons/pin.png">
+            <l-icon :icon-size="[70, 70]" icon-url="/icons/pin.png">
             </l-icon>
           </l-marker>
 
           <div class="slidePet d-flex align-center flex-column z-index">
             <mapMarkersCreateConnectionComponent :marker="marker" :points="points" v-model="infoConnectMarker">
             </mapMarkersCreateConnectionComponent>
-            <mapMarkersShowComponent :marker="marker" 
-            @connectmarker="connectMarker" @updateModifiedMarker="updateModifiedMarker" 
-            @updatemarker="setMarkerDragable" v-model="showMarker">
+            <mapMarkersShowComponent :marker="marker" @connectmarker="connectMarker"
+              @updateModifiedMarker="updateModifiedMarker" @updatemarker="setMarkerDragable" v-model="showMarker">
             </mapMarkersShowComponent>
             <mapMarkersCreateComponent :latLng="myPosition" @pincreated="getMarkers()" :value="modal">
             </mapMarkersCreateComponent>
@@ -43,8 +51,11 @@
               </template>
             </v-btn>
           </div>
-          <v-btn fab absolute small right top color="blue" class="mt-14 z-index" @click="setLocationUser()">
-            <v-icon color="white">mdi-list</v-icon>
+          <v-btn absolute small right top color="blue" class="z-index font-weight-regular"
+            @click="showPadrones = !showPadrones">
+            <v-icon v-if="showPadrones">mdi-eye-off</v-icon>
+            <v-icon v-else>mdi-eye</v-icon>
+            padrones
           </v-btn>
         </div>
       </l-map>
@@ -56,6 +67,7 @@
 <script>
   const L = require('leaflet');
   var Routing = require('leaflet-routing-machine/src/');
+  const esri = require('esri-leaflet');
 
   import {
     latLng
@@ -82,10 +94,12 @@
       return {
         url: 'https://api.maptiler.com/maps/streets/256/{z}/{x}/{y}.png?key=oqNjPRZr4BmLmnzKyL60',
         latLng: latLng,
-        mapZoom: 18,
+        mapZoom: 20,
         modal: false,
         showMarker: false,
         infoConnectMarker: false,
+        showPadrones: true,
+        esri: esri,
         marker: {},
         myPosition: {
           lat: -34.9185,
@@ -98,15 +112,88 @@
           lng: -54.9716,
         },
         waypoints: [],
+        polylines: L.featureGroup(),
         findPet: null,
+        markers: []
       }
     },
     created() {},
     mounted() {
-      console.log(Routing)
       this.getMarkers()
+      const labelClass = {
+        // autocasts as new LabelClass()
+        symbol: {
+          type: "text", // autocasts as new TextSymbol()
+          color: "green",
+          font: { // autocast as new Font()
+            family: "Playfair Display",
+            size: 12,
+            weight: "bold"
+          }
+        },
+        labelPlacement: "above-center",
+        labelExpressionInfo: {
+          expression: "$feature.objectid",
+          value: "-"
+        },
+        "maxScale": 14864,
+        "minScale": 0,
+
+
+      };
+
+      this.setAllPadrones()
+      this.esri.dynamicMapLayer({
+        url: "https://gis.maldonado.gub.uy/arcgis/rest/services/Servicios_AGOL/Maldonado_Base/MapServer/",
+      }).addTo(this.$refs.map.mapObject);
+
     },
+
+
     methods: {
+      setAllPadrones() {
+        var vm = this
+        var esri = this.esri.featureLayer({
+          url: " https://gis.maldonado.gub.uy/arcgis/rest/services/Servicios_AGOL/Maldonado_Base/MapServer/11",
+          resultRecordCount: 100,
+          minZoom: 18,
+          style: function () {
+            return {
+              color: "transparent",
+              weight: 2
+            };
+          },
+
+        }).addTo(this.$refs.map.mapObject);
+        var markers = []
+        esri.on('createfeature', function (e) {
+          var bounds = new L.LatLngBounds(e.feature.geometry.coordinates);
+          markers.push({
+            padron: e.feature.properties.padron,
+            lat: bounds.getCenter().lng,
+            lng: bounds.getCenter().lat
+          })
+        })
+
+        esri.on('load', () => {
+          vm.markers = []
+          const mapBounds = this.$refs.map.mapObject.getBounds()
+          vm.markers = markers.filter((m) => {
+            if (mapBounds.contains([m.lat, m.lng])) {
+              return m
+            }
+          })
+        })
+
+
+      },
+      checkZoom(e) {
+        if (e < 18) {
+          this.markers = []
+        } else {
+          this.setAllPadrones()
+        }
+      },
       getMarkers() {
         this.$axios.get('/api/columns/?populate=*')
           .then((response) => {
@@ -116,20 +203,23 @@
             console.log(error)
           })
       },
-      setMarkerDragable(){
+      setMarkerDragable() {
         let indexMarker = this.geoMultiple.findIndex(marker => marker.id === this.marker.id)
         const marker = this.geoMultiple[indexMarker]
         let draggable = (marker.draggable) ? false : true
-        this.$set(this.geoMultiple,indexMarker,{...this.marker,draggable:draggable})
+        this.$set(this.geoMultiple, indexMarker, {
+          ...this.marker,
+          draggable: draggable
+        })
       },
-      setMarkerPos(e){
+      setMarkerPos(e) {
         console.log(e.target)
         this.marker.lat = e.target._latlng.lat
         this.marker.lng = e.target._latlng.lng
       },
-      updateModifiedMarker(){
+      updateModifiedMarker() {
         let indexMarker = this.geoMultiple.findIndex(marker => marker.id === this.marker.id)
-        this.$set(this.geoMultiple,indexMarker,this.marker)
+        this.$set(this.geoMultiple, indexMarker, this.marker)
       },
       setMarker(e) {
         if (this.infoConnectMarker) {
@@ -146,8 +236,8 @@
             smoothFactor: 1
 
           });
-          L.Lin
-          firstpolyline.addTo(this.$refs.map.mapObject);
+          this.polylines.addLayer(firstpolyline)
+          this.$refs.map.mapObject.addLayer(this.polylines)
 
         } else {
           this.marker = e
@@ -181,7 +271,7 @@
       },
       setLocationUser() {
         this.mapCenter = this.myPosition
-        this.mapZoom = 15
+        this.mapZoom = 18
       },
 
       setMapZoom() {
@@ -200,18 +290,15 @@
       },
     },
     watch: {
+      mapZoom(val) {
+        console.log(val)
+        if (val < 18) {
+          this.markers = []
+        }
+      },
       infoConnectMarker(val) {
         if (!val) {
-          for (i in this.$refs.map._layers) {
-            if (this.$refs.map._layers[i].options.format == undefined) {
-              try {
-                this.$refs.map.removeLayer(map._layers[i]);
-              } catch (e) {
-                console.log("problem with " + e + map._layers[i]);
-              }
-            }
-          }
-
+          this.polylines.clearLayers()
         }
       }
     },
