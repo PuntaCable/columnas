@@ -28,8 +28,9 @@
           </template>
         </v-row>
       </v-card-text>
-      <v-card-actions>
-        {{ totalDistance() }} M
+      <v-divider></v-divider>
+      <v-card-actions class="text-h5 font-weight-regular text-center d-flex justify-center">
+        Total: {{ totalDistance() }} M
       </v-card-actions>
     </v-card>
   </v-slide-y-reverse-transition>
