@@ -28,6 +28,9 @@
           </template>
         </v-row>
       </v-card-text>
+      <v-card-actions>
+        {{ totalDistance() }} M
+      </v-card-actions>
     </v-card>
   </v-slide-y-reverse-transition>
 
@@ -73,6 +76,13 @@
         const distance = markers[0].latLng.distanceTo(markers[1].latLng)
         return Math.round(distance)
       },
+      totalDistance(){
+        let total = 0
+        this.markersGroup.forEach(markerGroup => {
+          total += this.getDistance(markerGroup)
+        });
+        return total
+      },  
       closeDialog(){
         this.$emit('points',[])
         this.$emit('input', false)

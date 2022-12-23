@@ -117,7 +117,9 @@
         markers: []
       }
     },
-    created() {},
+    created() {
+      this.getPosition()
+    },
     mounted() {
       this.getMarkers()
       const labelClass = {
