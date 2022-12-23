@@ -57,6 +57,10 @@
             <v-icon v-else>mdi-eye</v-icon>
             padrones
           </v-btn>
+          <v-btn absolute small @click="setLocationUser()" right fab top color="blue" class="z-index font-weight-regular" style="margin-top:80px">
+            <!--map center icon -->
+            <v-icon>mdi-crosshairs-gps</v-icon>
+          </v-btn>
         </div>
       </l-map>
 
@@ -118,9 +122,9 @@
       }
     },
     created() {
-      this.getPosition()
     },
     mounted() {
+      this.getPosition()
       this.getMarkers()
       const labelClass = {
         // autocasts as new LabelClass()
@@ -262,18 +266,20 @@
       },
       getPosition() {
         var vm = this
-        navigator.geolocation.getCurrentPosition(() => {
+        navigator.geolocation.getCurrentPosition((position) => {
+          vm.myPosition.lat = position.coords.latitude
+          vm.myPosition.lng = position.coords.longitude
           vm.mapCenter = vm.myPosition
         })
         navigator.geolocation.watchPosition(function (position) {
-          vm.myPosition.lat = position.coords.lng
-          vm.myPosition.lng = position.coords.lat
+          vm.myPosition.lat = position.coords.latitude
+          vm.myPosition.lng = position.coords.longitude
           vm.$forceUpdate()
         });
       },
       setLocationUser() {
-        this.mapCenter = this.myPosition
-        this.mapZoom = 18
+        this.$refs.map.mapObject.panTo(new L.LatLng(this.myPosition.lat, this.myPosition.lng));
+        this.$forceUpdate()
       },
 
       setMapZoom() {
