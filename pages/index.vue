@@ -266,8 +266,8 @@
           vm.mapCenter = vm.myPosition
         })
         navigator.geolocation.watchPosition(function (position) {
-          vm.myPosition.lat = position.coords.lat
-          vm.myPosition.lng = position.coords.lng
+          vm.myPosition.lat = position.coords.lng
+          vm.myPosition.lng = position.coords.lat
           vm.$forceUpdate()
         });
       },
