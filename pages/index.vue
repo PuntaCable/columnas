@@ -57,10 +57,17 @@
             <v-icon v-else>mdi-eye</v-icon>
             padrones
           </v-btn>
-          <v-btn absolute small @click="setLocationUser()" right fab top color="blue" class="z-index font-weight-regular" style="margin-top:80px">
+          <v-btn absolute small right top color="blue" style="margin-top:40px" class="z-index font-weight-regular"
+            @click="follow = !follow">
+            <v-icon v-if="follow">mdi-check-circle</v-icon>
+            <v-icon v-else>mdi-close-circle</v-icon>
+            Seguir
+            </v-btn>
+            <v-btn absolute small @click="setLocationUser()" right fab top color="blue" class="z-index font-weight-regular" style="margin-top:110px">
             <!--map center icon -->
             <v-icon>mdi-crosshairs-gps</v-icon>
           </v-btn>
+
         </div>
       </l-map>
 
@@ -103,6 +110,7 @@
         showMarker: false,
         infoConnectMarker: false,
         showPadrones: true,
+        follow: true,
         esri: esri,
         marker: {},
         myPosition: {
@@ -272,9 +280,12 @@
           vm.mapCenter = vm.myPosition
         })
         navigator.geolocation.watchPosition(function (position) {
-          vm.myPosition.lat = position.coords.latitude
-          vm.myPosition.lng = position.coords.longitude
-          vm.$forceUpdate()
+          if(vm.follow){
+            vm.myPosition.lat = position.coords.latitude
+            vm.myPosition.lng = position.coords.longitude
+            vm.mapCenter = vm.myPosition
+            vm.$forceUpdate()
+          }
         });
       },
       setLocationUser() {
