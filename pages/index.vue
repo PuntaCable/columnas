@@ -209,6 +209,7 @@
         }
       },
       getMarkers() {
+        this.modal = false
         this.$axios.get('/api/columns/?populate=*')
           .then((response) => {
             this.geoMultiple = response.data.data

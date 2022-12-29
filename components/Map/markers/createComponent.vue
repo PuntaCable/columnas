@@ -19,8 +19,8 @@
                 <img src="/icons/building-pin.png" width="30">
                 <span class="white--text">Edificio</span>
               </v-btn>
-              <v-btn width="33%" active-class="primary" class="font-weight-bold" value="Home">
-                  <img src="/icons/home-pin.png" width="30">
+              <v-btn width="33%" active-class="primary" class="font-weight-bold" value="House">
+                  <img src="/icons/house-pin.png" width="30">
                   <span class="white--text">Casa</span>
                 </v-btn>
 
