@@ -1,10 +1,11 @@
 <template>
   <div class="fill-width">
+    <label class="font-weight-regular mb-2 text-uppercase text-subtitle-2" :class="labelColor">{{label}}</label>
     <v-input v-bind="$attrs['class']" class="fill-width d-flex flex-column fill-width" hide-details>
       <v-text-field outlined class="elevation-2 rounded-lg rounded-r-0 font-weight-regular input-width" ref="input" hide-details v-model="fieldValue" v-bind="$attrs"
         @focus="checkFocus()">
       </v-text-field>
-      <v-btn class="button-width rounded-l-0 black--text rounded-lg font-weight-regular" :color="buttonColor" height="55" x-large @click="handler()">
+      <v-btn small class="button-width rounded-l-0 black--text rounded-lg font-weight-regular" :color="buttonColor" height="40"  @click="handler()">
         {{$data["button-label"]}}&nbsp;<v-icon color="white">{{icon}}</v-icon>
       </v-btn>
     </v-input>
@@ -35,6 +36,14 @@
         type: String,
         default: 'mdi-content-save'
       },
+      label:{
+        type: String,
+        default: ''
+      },
+      labelColor: {
+        type: String,
+        default: 'white--text'
+      },
       buttonColor: {
         type: String,
         default: 'primary'
@@ -53,19 +62,14 @@
     },
     methods: {
       handler() {
-        this.$emit('click',this.fieldValue)
-        this.actionSuccess = true
+        console.log(this.fieldValue)
+        this.$emit('input',this.fieldValue)
       },
       checkFocus() {
         if (!this.focused) {
           this.focused = true
         }
         this.$forceUpdate()
-      }
-    },
-    watch: {
-      fieldValue(newValue) {
-        this.$emit('input', newValue);
       }
     },
     computed: {

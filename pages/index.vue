@@ -4,6 +4,7 @@
     <v-card class="fill-height p-relative">
       <v-card-title>
         <mapExportComponent :points="geoMultiple"></mapExportComponent>
+        <formsFieldsTextButtonComponent class="mt-2" v-model="search" dense background-color="white" label="Buscar..." icon="mdi-magnify"></formsFieldsTextButtonComponent>
       </v-card-title>
       <l-map ref="map" @update:zoom="checkZoom" :center="latLng(mapCenter.lat, mapCenter.lng)" :zoom="mapZoom">
         <div class="p-relative">
@@ -79,6 +80,7 @@
   const L = require('leaflet');
   var Routing = require('leaflet-routing-machine/src/');
   const esri = require('esri-leaflet');
+  var qs = require('qs');
 
   import {
     latLng
@@ -126,7 +128,8 @@
         waypoints: [],
         polylines: L.featureGroup(),
         findPet: null,
-        markers: []
+        markers: [],
+        search:""
       }
     },
     created() {
@@ -210,7 +213,8 @@
       },
       getMarkers() {
         this.modal = false
-        this.$axios.get('/api/columns/?populate=*')
+        this.$axios.get('/api/columns/?populate=*',{
+        })
           .then((response) => {
             this.geoMultiple = response.data.data
           })
@@ -218,6 +222,39 @@
             console.log(error)
           })
       },
+      searchMarkers() {
+        this.modal = false
+        let filters = null
+        if(this.search !=""){
+          filters ={
+            filters:{
+              reference:{
+                $contains:this.search
+              }
+            },
+          }
+        }
+        this.$axios.get('/api/columns/?populate=*',{
+          params:filters,
+          paramsSerializer: params => {
+          return qs.stringify(params, {
+            arrayFormat: 'brackets'
+          })
+          }
+
+
+        })
+          .then((response) => {
+            if(response.data.data[0]){
+              this.mapCenter = response.data.data[0]
+            }
+          })
+          .catch((error) => {
+            console.log(error)
+          })
+      },
+
+
       setMarkerDragable() {
         let indexMarker = this.geoMultiple.findIndex(marker => marker.id === this.marker.id)
         const marker = this.geoMultiple[indexMarker]
@@ -310,6 +347,9 @@
       },
     },
     watch: {
+      search(){
+        this.searchMarkers()
+      },
       mapZoom(val) {
         console.log(val)
         if (val < 18) {

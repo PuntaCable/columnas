@@ -48,6 +48,10 @@
                 v-model="marker.apto" type="number" label="Apto"></formsFieldsTextComponent>
             </v-col>
             </template>
+            <v-col class="col-12">
+              <formsFieldsTextComponent type="number" label-color="white--text" background-color="white" class="black--text"
+                v-model="marker.permisor" label="Permisor"></formsFieldsTextComponent>
+            </v-col>
 
 
           </v-row>
