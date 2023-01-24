@@ -21,6 +21,7 @@
     "leaflet-routing-machine": "^3.2.12",
     "lrm-graphhopper": "^1.2.0",
     "nuxt": "^2.15.8",
+    "qs": "^6.11.0",
     "tokml": "^0.4.0",
     "vue": "^2.7.10",
     "vue-server-renderer": "^2.7.10",
