@@ -7,7 +7,7 @@
       </v-card-title>
       <v-divider></v-divider>
       <v-card-text>
-        <v-row>
+        <v-row no-gutters>
           <v-col class="col-12">
             <v-btn-toggle class="elevation-3 rounded-lg" color="primary white--text" v-model="marker.type"
               style="width:100%">

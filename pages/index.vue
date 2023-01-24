@@ -396,7 +396,7 @@
 
   .slidePet {
     position: absolute;
-    bottom: 5%;
+    bottom: 15%;
     margin: 0 auto;
     left: 0;
     right: 0;
