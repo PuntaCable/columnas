@@ -40,7 +40,7 @@
                 v-model="marker.apto" label="Apto"></formsFieldsTextComponent>
             </v-col>
             </template>
-            <v-col class="col-12">
+            <v-col class="col-12"  v-if="marker.type=='House'" >
               <formsFieldsTextComponent type="number" label-color="white--text" background-color="white" class="black--text"
                 v-model="marker.permisor" label="Permisor"></formsFieldsTextComponent>
             </v-col>

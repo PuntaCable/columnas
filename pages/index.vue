@@ -36,7 +36,7 @@
             <mapMarkersCreateConnectionComponent :marker="marker" :points="points" v-model="infoConnectMarker">
             </mapMarkersCreateConnectionComponent>
             <mapMarkersShowComponent :marker="marker" @connectmarker="connectMarker"
-              @updateModifiedMarker="updateModifiedMarker" @updatemarker="setMarkerDragable" v-model="showMarker">
+              @updateModifiedMarker="updateModifiedMarker" @updatemarker="setMarkerDragable" @pindeleted="getMarkers();showMarker=false" v-model="showMarker">
             </mapMarkersShowComponent>
             <mapMarkersCreateComponent :latLng="myPosition" @pincreated="getMarkers()" :value="modal">
             </mapMarkersCreateComponent>
@@ -128,14 +128,15 @@
         waypoints: [],
         polylines: L.featureGroup(),
         findPet: null,
+        loading: false,
         markers: [],
         search:""
       }
     },
     created() {
+      this.getPosition()
     },
     mounted() {
-      this.getPosition()
       this.getMarkers()
       const labelClass = {
         // autocasts as new LabelClass()
@@ -163,6 +164,7 @@
       this.esri.dynamicMapLayer({
         url: "https://gis.maldonado.gub.uy/arcgis/rest/services/Servicios_AGOL/Maldonado_Base/MapServer/",
       }).addTo(this.$refs.map.mapObject);
+        this.$refs.map.mapObject.panTo(this.latLng(this.myPosition.lat, this.myPosition.lng))
 
     },
 
@@ -312,19 +314,20 @@
       },
       getPosition() {
         var vm = this
+        this.loading = true
         navigator.geolocation.getCurrentPosition((position) => {
           vm.myPosition.lat = position.coords.latitude
           vm.myPosition.lng = position.coords.longitude
-          vm.mapCenter = vm.myPosition
         })
         navigator.geolocation.watchPosition(function (position) {
           if(vm.follow){
             vm.myPosition.lat = position.coords.latitude
             vm.myPosition.lng = position.coords.longitude
-            vm.mapCenter = vm.myPosition
-            vm.$forceUpdate()
+            vm.mapCenter.lat = position.coords.latitude
+            vm.mapCenter.lng = position.coords.longitude
           }
         });
+        vm.$forceUpdate()
       },
       setLocationUser() {
         this.$refs.map.mapObject.panTo(new L.LatLng(this.myPosition.lat, this.myPosition.lng));

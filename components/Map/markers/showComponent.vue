@@ -49,7 +49,7 @@
             </v-col>
             </template>
             <v-col class="col-12">
-              <formsFieldsTextComponent type="number" label-color="white--text" background-color="white" class="black--text"
+              <formsFieldsTextComponent type="number"  v-if="marker.type=='House'"  label-color="white--text" background-color="white" class="black--text"
                 v-model="marker.permisor" label="Permisor"></formsFieldsTextComponent>
             </v-col>
 
@@ -57,11 +57,15 @@
           </v-row>
         </v-card-text>
         <v-card-actions>
-          <v-btn color="primary font-weight-regular rounded-xl" width="45%" @click="connectMarker()">
+          <v-btn color="red" class="rounded-xl" width="30%" @click="deleteMarker()">
+            Eliminar
+          </v-btn>
+          <v-spacer></v-spacer>
+          <v-btn color="primary font-weight-regular rounded-xl" width="30%" @click="connectMarker()">
             Conectar&nbsp;<img src="/icons/pin.png" width="30">
           </v-btn>
           <v-spacer></v-spacer>
-          <v-btn color="primary font-weight-regular rounded-xl" width="45%" @click="updateMarker()">
+          <v-btn color="primary font-weight-regular rounded-xl" width="30%" @click="updateMarker()">
             Actualizar UBI
           </v-btn>
 
@@ -130,7 +134,15 @@
         }).catch(err => {
           console.log(err)
         })
+      },
+      deleteMarker(){
+        this.$axios.delete('/api/columns/'+this.marker.id).then(res => {
+          this.$emit('pindeleted')
+        }).catch(err => {
+          console.log(err)
+        })
       }
+
     }
   }
 
